@@ -109,6 +109,20 @@ int run_amnesic_pipeline(const PipelineConfig *config) {
             clear_terminal_screen();
             printf("============================================================\n");
             printf("         AMNESIC HASHER - AIR-GAPPED PASSKEY GENERATOR\n");
+            printf("============================================================\n");
+
+            const char *algo_str = (config->algo == ALGO_SHA512) ? "SHA-512" :
+                                   (config->algo == ALGO_SHA256) ? "SHA-256" : "BLAKE3";
+            const char *enc_str = (config->encoding == ENCODE_BASE64) ? "BASE64" :
+                                  (config->encoding == ENCODE_BASE85) ? "BASE85" : "HEX";
+            const char *mode_str = (config->mode == MODE_PROCESS) ? "PROCESS" :
+                                   (config->mode == MODE_EXPLODE) ? "EXPLODE" : "SIMPLE";
+
+            if (config->mode == MODE_PROCESS) {
+                printf("  Mode: %s (Variant %d) | Engine: %s | Encoder: %s\n", mode_str, config->variant_id, algo_str, enc_str);
+            } else {
+                printf("  Mode: %s | Engine: %s | Encoder: %s\n", mode_str, algo_str, enc_str);
+            }
             printf("============================================================\n\n");
             printf("GENERATED PASSKEY:\n%s\n\n", encoded_output);
             printf("------------------------------------------------------------\n");

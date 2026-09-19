@@ -168,6 +168,20 @@ This log records all actions taken during development rounds, detailing tasks, e
   - Executed `echo -n "test" | ./amnesic_hasher --process 1 --algo blake3`: Successfully outputs `c7a88a8fec220437f86d73487d1ee5a12bb2025ee5636e69a339ac63212e5f63` without buffer overflow errors.
   - Verified `./amnesic_hasher --help` output.
 
+---
+
+## Round 12: Option Forwarding & UI Header for Standalone Terminal Popup (-t)
+
+* **Date/Time:** 2026-09-19 03:33 UTC-3
+* **Target Components:** `src/terminal.c`, `src/pipeline.c`
+* **Action:**
+  - Forwarded absolute executable path, working directory (`getcwd`), and all mode/algorithm/encoding parameters (`--simple`, `--process <N>`, `--explode`, `--algo`, `--encode`, `--length`) when spawning the standalone terminal popup (`-t`).
+  - Added rich header UI in child terminal window displaying active Mode, Algorithm, Encoder, and Variant ID before input prompt.
+* **Expected Outcome:** Seamless execution of all Amnesic Hasher modes inside isolated popup terminal windows without leaving any parameter or secret traces in the parent shell history (`~/.bash_history`).
+* **Status:** COMPLETED.
+* **Verification:** `make test` passed cleanly (12/12 tests).
+
+
 
 
 

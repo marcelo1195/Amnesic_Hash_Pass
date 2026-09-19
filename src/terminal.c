@@ -69,8 +69,20 @@ int launch_in_standalone_terminal(int argc, char *argv[]) {
         return AMNESIC_ERR_IO;
     }
 
+    char cwd[1024];
+    if (!getcwd(cwd, sizeof(cwd))) {
+        cwd[0] = '.';
+        cwd[1] = '\0';
+    }
+
+    char abs_exe[1024];
+    if (!realpath(argv[0], abs_exe)) {
+        strncpy(abs_exe, argv[0], sizeof(abs_exe) - 1);
+        abs_exe[sizeof(abs_exe) - 1] = '\0';
+    }
+
     char exec_cmd[4096];
-    size_t off = snprintf(exec_cmd, sizeof(exec_cmd), "\"%s\" --child-terminal", argv[0]);
+    size_t off = snprintf(exec_cmd, sizeof(exec_cmd), "cd \"%s\" && \"%s\" --child-terminal", cwd, abs_exe);
 
     for (int i = 1; i < argc; i++) {
         if (strcmp(argv[i], "-t") == 0 || strcmp(argv[i], "--terminal") == 0) {
