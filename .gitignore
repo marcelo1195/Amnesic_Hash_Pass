@@ -1,6 +1,7 @@
 # Compiled executables
 amnesic_hasher
 test_runner
+debug_hasher
 
 # Object files and compiled libraries
 *.o
