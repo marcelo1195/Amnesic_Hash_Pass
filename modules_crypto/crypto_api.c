@@ -35,7 +35,7 @@ int generate_hash(CryptoAlgo algo,
         }
 
         case ALGO_BLAKE3: {
-            size_t final_len = (req_output_len > 0) ? req_output_len : BLAKE3_OUT_LEN;
+            size_t final_len = (req_output_len > 0 && req_output_len < BLAKE3_OUT_LEN) ? req_output_len : BLAKE3_OUT_LEN;
             blake3_hash(input, input_len, output, final_len);
             *out_len = final_len;
             return AMNESIC_SUCCESS;

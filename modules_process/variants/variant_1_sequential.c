@@ -34,7 +34,7 @@ int variant_1_sequential(CryptoAlgo algo, const unsigned char *input, size_t inp
         secure_wipe(char_digest, sizeof(char_digest));
 
         /* Step 2: Hash individual character */
-        int ret = generate_hash(algo, &input[i], 1, char_digest, sizeof(char_digest), &char_digest_len);
+        int ret = generate_hash(algo, &input[i], 1, char_digest, digest_size, &char_digest_len);
         if (ret != AMNESIC_SUCCESS) {
             secure_wipe(block_buffer, total_block_len);
             free(block_buffer);

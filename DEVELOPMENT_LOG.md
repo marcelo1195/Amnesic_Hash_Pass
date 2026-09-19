@@ -149,5 +149,25 @@ This log records all actions taken during development rounds, detailing tasks, e
 * **Status:** COMPLETED.
 * **Verification:** Tested interactive CLI entry (`./amnesic_hasher --simple`); prompt renders, echo is suppressed, screen wipes prompt, and final passkey is displayed cleanly.
 
+---
+
+## Round 11: Standalone Terminal Popup (-t), BLAKE3 Buffer Fix, SHA-512 Default & Rich Help
+
+* **Date/Time:** 2026-09-19 03:28 UTC-3
+* **Target Components:** `src/terminal.c`, `src/main.c`, `src/pipeline.c`, `modules_crypto/crypto_api.c`, `modules_process/variants/variant_1_sequential.c`, `README.md`, `BluePrint.md`
+* **Action:**
+  - Implemented `-t` / `--terminal` standalone popup terminal launcher (`launch_in_standalone_terminal`) to spawn isolated child terminal windows, leaving zero trace in parent shell history (`~/.bash_history`).
+  - Fixed BLAKE3 output digest length buffer overflow in `crypto_api.c` & `variant_1_sequential.c` by strictly passing target `digest_size` (32 bytes).
+  - Changed default hashing algorithm from `SHA-256` to `SHA-512`.
+  - Overhauled `--help` screen to provide clear categorized documentation, options, and usage examples.
+  - Updated `README.md` and `BluePrint.md`.
+* **Expected Outcome:** Zero-trace standalone popup window mode, SHA-512 default hashing, 100% bug-free BLAKE3 Variant 1 cascade execution, and updated documentation.
+* **Status:** COMPLETED.
+* **Verification:**
+  - Executed `make clean && make && make test`: All 12 automated unit tests passed.
+  - Executed `echo -n "test" | ./amnesic_hasher --process 1 --algo blake3`: Successfully outputs `c7a88a8fec220437f86d73487d1ee5a12bb2025ee5636e69a339ac63212e5f63` without buffer overflow errors.
+  - Verified `./amnesic_hasher --help` output.
+
+
 
 

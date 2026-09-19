@@ -131,5 +131,14 @@ The tool is not complete until it survives aggressive laboratory testing.
 * **Audit 3: Valgrind (Leak Detection):**
 * **DoD:** Running the tool under `valgrind` reports "0 bytes in 0 blocks are definitely lost" indicating no memory leaks (which could leave key fragments stranded in the Heap).
 
+---
+
+### PHASE 8: Standalone Popup Terminal Mode (-t / --terminal) & SHA-512 Default
+
+* **Component:** `terminal.c`, `main.c`, `pipeline.c`
+* **Functionality:** Spawns an isolated terminal emulator popup window (`x-terminal-emulator`, `gnome-terminal`, `konsole`, `xterm`). The user inputs passkey with TTY echo disabled, views the output, and presses ENTER to wipe memory and auto-close the popup terminal window. Default hash algorithm updated to SHA-512.
+* **DoD:** Running `./amnesic_hasher -t` opens a dedicated terminal window, processes the passkey interactively, pauses for confirmation, wipes memory on ENTER, and closes the window. Zero history trace is left in the parent shell history.
+
+
 
 

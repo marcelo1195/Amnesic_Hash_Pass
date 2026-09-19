@@ -105,10 +105,23 @@ int run_amnesic_pipeline(const PipelineConfig *config) {
     secure_wipe(raw_output, sizeof(raw_output));
 
     if (ret == AMNESIC_SUCCESS) {
-        clear_terminal_screen();
-        printf("%s\n", encoded_output);
+        if (config->is_child_terminal) {
+            clear_terminal_screen();
+            printf("============================================================\n");
+            printf("         AMNESIC HASHER - AIR-GAPPED PASSKEY GENERATOR\n");
+            printf("============================================================\n\n");
+            printf("GENERATED PASSKEY:\n%s\n\n", encoded_output);
+            printf("------------------------------------------------------------\n");
+            printf("Press <ENTER> to wipe memory and close terminal window...");
+            fflush(stdout);
+            getchar();
+            clear_terminal_screen();
+        } else {
+            clear_terminal_screen();
+            printf("%s\n", encoded_output);
+        }
     } else {
-        fprintf(stderr, "Error: Encoding output failed.\n");
+        fprintf(stderr, "Error: Processing or encoding output failed.\n");
     }
 
     secure_wipe(encoded_output, sizeof(encoded_output));

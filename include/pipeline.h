@@ -12,6 +12,8 @@ typedef struct {
     int variant_id;
     size_t length;
     const char *file_path;
+    bool use_terminal;
+    bool is_child_terminal;
 } PipelineConfig;
 
 int run_amnesic_pipeline(const PipelineConfig *config);
