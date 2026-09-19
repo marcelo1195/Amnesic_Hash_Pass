@@ -45,3 +45,12 @@ int generate_hash(CryptoAlgo algo,
             return AMNESIC_ERR_ALGO;
     }
 }
+
+size_t get_crypto_digest_size(CryptoAlgo algo) {
+    switch (algo) {
+        case ALGO_SHA256: return SHA256_DIGEST_SIZE;
+        case ALGO_SHA512: return SHA512_DIGEST_SIZE;
+        case ALGO_BLAKE3: return BLAKE3_OUT_LEN;
+        default: return 0;
+    }
+}

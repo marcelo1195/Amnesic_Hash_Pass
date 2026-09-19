@@ -4,23 +4,23 @@
 #include "module_registry.h"
 
 /* Forward declarations of drop-in variant functions */
-int variant_1_sequential(const unsigned char *input, size_t input_len,
+int variant_1_sequential(CryptoAlgo algo, const unsigned char *input, size_t input_len,
                          unsigned char *output, size_t max_out_len, size_t *out_len);
 
-int variant_2_xor(const unsigned char *input, size_t input_len,
+int variant_2_xor(CryptoAlgo algo, const unsigned char *input, size_t input_len,
                   unsigned char *output, size_t max_out_len, size_t *out_len);
 
 static const ProcessVariant g_variants[] = {
     {
         .id = 1,
-        .name = "Sequential SHA-256 (100 rounds)",
-        .description = "Iterative 100-round SHA-256 feedback transformation",
+        .name = "Sequential Cascade Hashing",
+        .description = "Human-reproducible character-by-character hash cascade",
         .process_func = variant_1_sequential
     },
     {
         .id = 2,
-        .name = "Bifurcated XOR Folding (SHA-512)",
-        .description = "Computes 512-bit digest and folds halves using bitwise XOR",
+        .name = "Bifurcated XOR Folding",
+        .description = "Computes algorithm digest and folds halves using bitwise XOR",
         .process_func = variant_2_xor
     }
 };

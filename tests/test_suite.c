@@ -98,6 +98,27 @@ static void test_memory_zeroization(void) {
     TEST_ASSERT(non_zero_count == 0, "secure_wipe zeroizes memory completely");
 }
 
+static void test_variant_1_cascade(void) {
+    const ProcessVariant *v1 = get_variant_by_id(1);
+    TEST_ASSERT(v1 != NULL && v1->process_func != NULL, "Variant 1 function pointer valid");
+
+    if (v1 && v1->process_func) {
+        const char *input = "test";
+        unsigned char raw_out[64];
+        size_t out_len = 0;
+
+        int ret = v1->process_func(ALGO_SHA512, (const unsigned char*)input, strlen(input), raw_out, sizeof(raw_out), &out_len);
+        TEST_ASSERT(ret == AMNESIC_SUCCESS, "Variant 1 execution success");
+
+        char hex[129];
+        size_t hex_len = 0;
+        encode_hex(raw_out, out_len, hex, sizeof(hex), &hex_len);
+
+        const char *expected = "b168776df40a395b01945999770ff8f6e7ba5b721d09d967ab9a08feeec68906fb727db283079242fc5a811c42ef82afa8c1ebfb1742fd7cf0eefd733cb1fff0";
+        TEST_ASSERT(strcmp(hex, expected) == 0, "Variant 1 SHA-512 cascade vector matches manual bash calculation");
+    }
+}
+
 static void test_variant_registry(void) {
     size_t count = get_registered_variants_count();
     TEST_ASSERT(count >= 2, "Module registry contains at least 2 variants");
@@ -119,6 +140,7 @@ int main(void) {
     test_base85_encoder();
     test_memory_zeroization();
     test_variant_registry();
+    test_variant_1_cascade();
 
     printf("\nTest Summary: %d Passed, %d Failed\n", g_tests_passed, g_tests_failed);
     return (g_tests_failed == 0) ? 0 : 1;

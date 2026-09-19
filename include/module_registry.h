@@ -1,10 +1,10 @@
 #ifndef AMNESIC_MODULE_REGISTRY_H
 #define AMNESIC_MODULE_REGISTRY_H
 
-#include <stddef.h>
-#include <stdint.h>
+#include "crypto_api.h"
 
-typedef int (*ProcessVariantFunc)(const unsigned char *input, size_t input_len,
+typedef int (*ProcessVariantFunc)(CryptoAlgo algo,
+                                  const unsigned char *input, size_t input_len,
                                   unsigned char *output, size_t max_out_len, size_t *out_len);
 
 typedef struct {

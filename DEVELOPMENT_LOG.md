@@ -119,3 +119,21 @@ This log records all actions taken during development rounds, detailing tasks, e
 * **Status:** COMPLETED.
 * **Verification:** Ran `make clean && git status` confirming only source files, headers, documentation, Makefile, and `.gitignore` are tracked.
 
+---
+
+## Round 9: Implementation of Variant 1 - Sequential Cascade Hashing
+
+* **Date/Time:** 2026-09-19 03:01 UTC-3
+* **Target Components:** `modules_process/variants/variant_1_sequential.c`, `include/module_registry.h`, `modules_crypto/crypto_api.c`, `tests/test_suite.c`
+* **Action:**
+  - Implemented Module Variant 1 ("Sequential Cascade Hashing") according to the human-reproducible manual specification.
+  - Process: Character isolation -> Individual lower hex hashing + `\n` -> Assembly into memory block -> Final collapse hash.
+  - Added helper `get_crypto_digest_size()` to `crypto_api.c` for dynamic algorithm digest sizing.
+  - Added automated test vector `test_variant_1_cascade()` in `tests/test_suite.c` matching the manual bash test vector (`b1687...fff0`).
+* **Expected Outcome:** 100% output parity between Amnesic Hasher binary and manual GNU/Linux terminal pipeline (`sha512sum`, `sha256sum`, `blake3`).
+* **Status:** COMPLETED.
+* **Verification:**
+  - Executed `make test`: All 12 automated unit tests passed.
+  - Verified `echo -n "test" | ./amnesic_hasher --process 1 --algo sha512 --encode hex` matches manual bash result `b168776df40a395b01945999770ff8f6e7ba5b721d09d967ab9a08feeec68906fb727db283079242fc5a811c42ef82afa8c1ebfb1742fd7cf0eefd733cb1fff0`.
+
+

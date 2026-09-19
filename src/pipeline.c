@@ -62,7 +62,7 @@ int run_amnesic_pipeline(const PipelineConfig *config) {
                 ret = AMNESIC_ERR_VARIANT;
                 break;
             }
-            ret = variant->process_func(input_buffer, input_len, raw_output, sizeof(raw_output), &raw_output_len);
+            ret = variant->process_func(config->algo, input_buffer, input_len, raw_output, sizeof(raw_output), &raw_output_len);
             break;
         }
 

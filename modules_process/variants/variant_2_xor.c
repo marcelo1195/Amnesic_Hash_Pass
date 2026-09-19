@@ -1,10 +1,12 @@
 #include <string.h>
 #include "amnesic.h"
+#include "crypto_api.h"
 #include "sha512.h"
 #include "memory.h"
 
-int variant_2_xor(const unsigned char *input, size_t input_len,
+int variant_2_xor(CryptoAlgo algo, const unsigned char *input, size_t input_len,
                   unsigned char *output, size_t max_out_len, size_t *out_len) {
+    (void)algo; /* Currently operates on SHA-512 bifurcation */
     if (!input || !output || !out_len || max_out_len < 32) {
         return AMNESIC_ERR_ARGS;
     }
