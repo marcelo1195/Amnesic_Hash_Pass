@@ -1,0 +1,35 @@
+AMNESIC HASHER
+Business Rules & Operational Scope - V1.2 (Modular Architecture)
+1. Primary Purpose (Core Objective)
+The Amnesic Hasher is an air-gapped, highly modular CLI utility designed strictly to
+generate high-entropy deterministic passkeys (seeds) from simple inputs. It is a
+deterministic pipeline linking an Input Vector to a Processing Variant, a Hash Engine, and
+an Encoder.
+2. Anti-Forensic Constraints (The Amnesic Mandate)
+• Zero Volatile Footprint: Strict explicit_bzero zeroization on all buffers upon
+completion or exit.
+• Swap Paging Prevention: Mandatory mlock() to pin memory pages to RAM.
+• Terminal Hygiene: TTY echo disabled during interactive input; VT100 screen clear upon
+exit.
+3. Input Vectors & Raw Processing
+• Universally supports: Interactive (TTY), Pipes (STDIN), and File (--file).
+• Raw Ingestion: All inputs are read as raw byte arrays. Whitespace and formatting are
+mathematically preserved.
+• Hard Limits: A strict ceiling is enforced for file ingestion to prevent buffer overflows within
+mlock bounds.
+4. Operational Modes (User Agency & Extensibility)
+The tool provides three operational tiers. To support extreme user independence and
+customization, the Process tier operates as a static plugin architecture.
+• Mode 1: Simple (--simple)
+Direct 1:1 hash mapping. Fully replicable via standard GNU tools.
+• Mode 2: Process (--process [N]) -> STATIC PLUGIN ARCHITECTURE
+Applies a deterministic structural manipulation. Modularity Rule: This mode MUST be
+built as a drop-in registry. Users can add a new processing variant simply by providing aC file containing the algorithm, a module name, and a description. The core pipeline will
+automatically map the variant number [N] to the user's custom logic without requiring
+rewrites of the main application.
+• Mode 3: Explode (--explode)
+Employs KDF-like iteration, XOR bifurcation, or XOF to forcibly expand entropy.
+5. I/O Specifications
+• Engine Selection: --algo sha256, --algo sha512, --algo blake3.
+• Format Output: --encode [hex | base64 | base85].
+• XOF Length: --length [Bytes] (Required for BLAKE3 in Explode mode).

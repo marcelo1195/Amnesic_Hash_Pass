@@ -1,0 +1,27 @@
+# Compiled executables
+amnesic_hasher
+test_runner
+
+# Object files and compiled libraries
+*.o
+*.a
+*.so
+*.dylib
+*.dll
+
+# Temporary files and editor backups
+*.swp
+*.swo
+*~
+*.bak
+*.tmp
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE and toolchain directories
+.vscode/
+.idea/
+.clangd/
+.cache/
