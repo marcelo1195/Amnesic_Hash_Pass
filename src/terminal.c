@@ -1,8 +1,10 @@
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include <termios.h>
+#include <limits.h>
 #include "amnesic.h"
 #include "terminal.h"
 
@@ -69,26 +71,35 @@ int launch_in_standalone_terminal(int argc, char *argv[]) {
         return AMNESIC_ERR_IO;
     }
 
-    char cwd[1024];
+    char cwd[PATH_MAX];
     if (!getcwd(cwd, sizeof(cwd))) {
         cwd[0] = '.';
         cwd[1] = '\0';
     }
 
-    char abs_exe[1024];
+    char abs_exe[PATH_MAX];
     if (!realpath(argv[0], abs_exe)) {
         strncpy(abs_exe, argv[0], sizeof(abs_exe) - 1);
         abs_exe[sizeof(abs_exe) - 1] = '\0';
     }
 
     char exec_cmd[4096];
-    size_t off = snprintf(exec_cmd, sizeof(exec_cmd), "cd \"%s\" && \"%s\" --child-terminal", cwd, abs_exe);
+    int written = snprintf(exec_cmd, sizeof(exec_cmd), "cd \"%s\" && \"%s\" --child-terminal", cwd, abs_exe);
+    size_t off = (written > 0 && (size_t)written < sizeof(exec_cmd)) ? (size_t)written : sizeof(exec_cmd) - 1;
 
     for (int i = 1; i < argc; i++) {
         if (strcmp(argv[i], "-t") == 0 || strcmp(argv[i], "--terminal") == 0) {
             continue;
         }
-        off += snprintf(exec_cmd + off, sizeof(exec_cmd) - off, " \"%s\"", argv[i]);
+        if (off < sizeof(exec_cmd) - 1) {
+            written = snprintf(exec_cmd + off, sizeof(exec_cmd) - off, " \"%s\"", argv[i]);
+            if (written > 0) {
+                off += (size_t)written;
+                if (off >= sizeof(exec_cmd)) {
+                    off = sizeof(exec_cmd) - 1;
+                }
+            }
+        }
     }
 
     char term_cmd[8192];

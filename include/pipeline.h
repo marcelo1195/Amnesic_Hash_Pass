@@ -14,6 +14,10 @@ typedef struct {
     const char *file_path;
     bool use_terminal;
     bool is_child_terminal;
+    bool mode_explicit;
+    bool variant_explicit;
+    bool algo_explicit;
+    bool encode_explicit;
 } PipelineConfig;
 
 int run_amnesic_pipeline(const PipelineConfig *config);

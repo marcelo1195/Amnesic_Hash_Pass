@@ -69,6 +69,7 @@ int main(int argc, char *argv[]) {
             config.is_child_terminal = true;
         } else if (strcmp(argv[i], "--simple") == 0) {
             config.mode = MODE_SIMPLE;
+            config.mode_explicit = true;
             mode_selected = true;
         } else if (strcmp(argv[i], "--process") == 0) {
             if (i + 1 >= argc) {
@@ -77,9 +78,12 @@ int main(int argc, char *argv[]) {
             }
             config.mode = MODE_PROCESS;
             config.variant_id = atoi(argv[++i]);
+            config.mode_explicit = true;
+            config.variant_explicit = true;
             mode_selected = true;
         } else if (strcmp(argv[i], "--explode") == 0) {
             config.mode = MODE_EXPLODE;
+            config.mode_explicit = true;
             mode_selected = true;
         } else if (strcmp(argv[i], "--algo") == 0) {
             if (i + 1 >= argc) {
@@ -87,6 +91,7 @@ int main(int argc, char *argv[]) {
                 return AMNESIC_ERR_ARGS;
             }
             i++;
+            config.algo_explicit = true;
             if (strcmp(argv[i], "sha256") == 0) {
                 config.algo = ALGO_SHA256;
             } else if (strcmp(argv[i], "sha512") == 0) {
@@ -103,6 +108,7 @@ int main(int argc, char *argv[]) {
                 return AMNESIC_ERR_ARGS;
             }
             i++;
+            config.encode_explicit = true;
             if (strcmp(argv[i], "hex") == 0) {
                 config.encoding = ENCODE_HEX;
             } else if (strcmp(argv[i], "base64") == 0) {

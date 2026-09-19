@@ -181,6 +181,23 @@ This log records all actions taken during development rounds, detailing tasks, e
 * **Status:** COMPLETED.
 * **Verification:** `make test` passed cleanly (12/12 tests).
 
+---
+
+## Round 13: Zero-Trace Interactive Popup Menu & snprintf Bounds Fix
+
+* **Date/Time:** 2026-09-19 03:43 UTC-3
+* **Target Components:** `src/terminal.c`, `src/pipeline.c`, `src/main.c`, `include/pipeline.h`
+* **Action:**
+  - Resolved `snprintf` buffer overflow check violation in `launch_in_standalone_terminal` by using explicit capacity bounds (`PATH_MAX`, bounds checks, and `#define _GNU_SOURCE`).
+  - Implemented `prompt_interactive_config()`: Running `./amnesic_hasher -t` with zero flags launches a 100% zero-trace interactive selection menu inside the popup window (Mode, Variant ID, Algorithm, Encoder, Input Vector).
+  - Ensured shell history (`~/.bash_history`) contains **zero configuration, secret, or hash traces** when executing `./amnesic_hasher -t`.
+* **Expected Outcome:** Robust popup window execution without buffer overflow crashes, paired with 100% zero-trace interactive configuration capabilities.
+* **Status:** COMPLETED.
+* **Verification:**
+  - `make clean && make && make test`: All 12 automated unit tests passed.
+  - Verified `./amnesic_hasher -t --simple --algo sha512` and `./amnesic_hasher -t` launch cleanly.
+
+
 
 
 
