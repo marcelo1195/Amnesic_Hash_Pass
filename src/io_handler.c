@@ -45,6 +45,8 @@ int read_input_vector(const char *file_path, unsigned char *buffer, size_t max_l
     bool is_interactive = isatty(STDIN_FILENO);
 
     if (is_interactive) {
+        fprintf(stderr, "Enter input vector: ");
+        fflush(stderr);
         disable_terminal_echo();
     }
 

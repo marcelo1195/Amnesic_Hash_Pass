@@ -105,13 +105,13 @@ int run_amnesic_pipeline(const PipelineConfig *config) {
     secure_wipe(raw_output, sizeof(raw_output));
 
     if (ret == AMNESIC_SUCCESS) {
+        clear_terminal_screen();
         printf("%s\n", encoded_output);
     } else {
         fprintf(stderr, "Error: Encoding output failed.\n");
     }
 
     secure_wipe(encoded_output, sizeof(encoded_output));
-    clear_terminal_screen();
 
     return ret;
 }

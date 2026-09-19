@@ -136,4 +136,18 @@ This log records all actions taken during development rounds, detailing tasks, e
   - Executed `make test`: All 12 automated unit tests passed.
   - Verified `echo -n "test" | ./amnesic_hasher --process 1 --algo sha512 --encode hex` matches manual bash result `b168776df40a395b01945999770ff8f6e7ba5b721d09d967ab9a08feeec68906fb727db283079242fc5a811c42ef82afa8c1ebfb1742fd7cf0eefd733cb1fff0`.
 
+---
+
+## Round 10: Fix Interactive Screen Clearing Sequence Order
+
+* **Date/Time:** 2026-09-19 03:11 UTC-3
+* **Target Components:** `src/pipeline.c`, `src/io_handler.c`
+* **Action:**
+  - Moved `clear_terminal_screen()` invocation to execute *before* `printf("%s\n", encoded_output)` in `pipeline.c`.
+  - Added explicit interactive prompt output `Enter input vector: ` on `stderr` before TTY echo suppression in `io_handler.c`.
+* **Expected Outcome:** Terminal screen clears prompt & input residual buffer, then displays generated hash at the top of the clean screen so it remains fully visible to the user.
+* **Status:** COMPLETED.
+* **Verification:** Tested interactive CLI entry (`./amnesic_hasher --simple`); prompt renders, echo is suppressed, screen wipes prompt, and final passkey is displayed cleanly.
+
+
 
